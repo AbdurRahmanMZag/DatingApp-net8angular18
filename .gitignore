@@ -483,3 +483,11 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 API/appsettings.json
+StudentAssets.zip
+StudentAssets/StudentAssets/PhotoManagementChallenge/Photo Management Challenge solution.pdf
+StudentAssets/StudentAssets/DatingApp.postman_collection.json
+StudentAssets/StudentAssets/jsongenerator.txt
+StudentAssets/StudentAssets/user.png
+StudentAssets/StudentAssets/UserSeedData.json
+StudentAssets/StudentAssets/PhotoManagementChallenge/Photo Management Challenge.pdf
+StudentAssets/StudentAssets/snippets/member-tabs-css.txt
