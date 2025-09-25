@@ -6,7 +6,7 @@
             <li class="nav-item"> <a class="nav-link ">Lists</a> </li>
             <li class="nav-item"> <a class="nav-link ">Messages</a> </li>
         </ul>
-        <form #loginForm="ngForm" class="d-flex" (ngSubmit)="login()">
+        <form #loginForm="ngForm" class="d-flex" (ngSubmit)="login()" autocomplete="off">
             <input name="username" [(ngModel)]="model.username" class="form-control me-2" placeholder="Username">
             <input name="password" [(ngModel)]="model.password" class="form-control me-2" placeholder="Password"
                 type="password">
