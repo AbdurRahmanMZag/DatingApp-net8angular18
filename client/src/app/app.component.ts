@@ -14,13 +14,9 @@ import { HomeComponent } from "./home/home.component";
 })
 export class AppComponent implements OnInit {
 
-  http = inject(HttpClient);
   accountService = inject(AccountService);
-  title = 'DatingApp';
-  users: any = null;
 
   ngOnInit(): void {
-    this.getUsers();
     this.setCurrentUser();
   }
 
@@ -31,13 +27,4 @@ export class AppComponent implements OnInit {
     this.accountService.currentUser.set(user);
   }
 
-  private getUsers() {
-    this.http.get('https://localhost:5001/api/users').subscribe({
-      next: (data) => {
-        this.users = data;
-      },
-      error: error => console.log(error),
-      complete: () => console.log("request completed")
-    });
-  }
 }
