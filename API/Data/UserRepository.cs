@@ -20,11 +20,10 @@ public class UserRepository(DataContext context) : IUserRepository
             .SingleOrDefaultAsync(x => x.UserName == username);
     }
 
-    public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+    public async Task<IEnumerable<AppUser>> GetUsersAsync()
     {
         return await context.Users
             .Include(x => x.Photos)
-            .Select(x => x.ToMemberDto())
             .ToListAsync();
     }
 

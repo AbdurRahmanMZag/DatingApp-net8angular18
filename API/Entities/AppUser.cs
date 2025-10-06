@@ -26,30 +26,4 @@ public class AppUser
     {
         return DateOfBirth.CalculateAge();
     }
-
-    public MemberDto ToMemberDto()
-    {
-        return new MemberDto
-        {
-            Id = this.Id,
-            UserName = this.UserName,
-            KnownAs = this.KnownAs,
-            Age = this.GetAge(),
-            Gender = this.Gender,
-            Created = this.Created,
-            LastActive = this.LastActive,
-            Introduction = this.Introduction,
-            Interests = this.Interests,
-            LookingFor = this.LookingFor,
-            City = this.City,
-            Country = this.Country,
-            PhotoUrl = this.Photos.FirstOrDefault(p => p.IsMain)?.Url,
-            Photos = this.Photos.Select(p => new PhotoDto
-            {
-                Id = p.Id,
-                Url = p.Url,
-                IsMain = p.IsMain
-            }).ToList()
-        };
-    }
 }
