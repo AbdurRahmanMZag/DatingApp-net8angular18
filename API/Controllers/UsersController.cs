@@ -13,7 +13,7 @@ namespace API.Controllers;
 public class UsersController(IUserRepository userRepository) : BaseApiController
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AppUser>>> GetMembers()
+    public async Task<ActionResult<IEnumerable<MemberDto>>> GetMembers()
     {
         var members = await userRepository.GetMembersAsync();
 
