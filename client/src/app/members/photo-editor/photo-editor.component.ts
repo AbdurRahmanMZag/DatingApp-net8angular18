@@ -1,14 +1,56 @@
 import { Member } from './../../_models/member';
-import { Component, input, signal } from '@angular/core';
-import { Dir } from "../../../../node_modules/@angular/cdk/bidi/index";
+import { Component, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
+import { DecimalPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { FileUploader, FileUploadModule } from 'ng2-file-upload';
+import { environment } from '../../../environments/environment';
+import { AccountService } from '../../_services/account.service';
 
 @Component({
   selector: 'app-photo-editor',
   standalone: true,
-  imports: [],
+  imports: [NgStyle, NgFor, NgIf, NgClass, FileUploadModule, DecimalPipe],
   templateUrl: './photo-editor.component.html',
   styleUrl: './photo-editor.component.css'
 })
-export class PhotoEditorComponent {
+export class PhotoEditorComponent implements OnInit {
   member = input.required<Member>();
+  @Output() memberChange = new EventEmitter<Member>();
+
+  uploader?: FileUploader;
+  hasBaseDropZoneOver = false;
+  baseUrl = environment.apiUrl;
+  accountService = inject(AccountService)
+
+  ngOnInit(): void {
+    this.initializeUploader();
+  }
+
+  fileOverBase(e: any): void {
+    this.hasBaseDropZoneOver = e;
+  }
+
+  initializeUploader() {
+    this.uploader = new FileUploader({
+      url: this.baseUrl + 'users/add-photo',
+      authToken: 'Bearer ' + this.accountService.currentUser()?.token,
+      isHTML5: true,
+      allowedFileType: ['image'],
+      removeAfterUpload: true,
+      autoUpload: false,
+      maxFileSize: 10 * 1024 * 1024
+    });
+
+    this.uploader.onAfterAddingFile = (file) => {
+      file.withCredentials = false;
+    };
+
+    this.uploader.onSuccessItem = (item, response, status, headers) => {
+      if (response) {
+        const photo = JSON.parse(response);
+        const updatedMember = { ...this.member() };
+        updatedMember.photos.push(photo);
+        this.memberChange.emit(updatedMember);
+      }
+    };
+  }
 }
