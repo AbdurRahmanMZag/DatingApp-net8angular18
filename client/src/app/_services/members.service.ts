@@ -45,7 +45,7 @@ export class MembersService {
         () => {
           this.members.update(members => members.map(m => {
             if (m.photos.includes(photo)) {
-              m.photoUrl = photo.url;
+              m.photos = m.photos.filter(p => p.id !== photo.id);
             }
             return m;
           }))
