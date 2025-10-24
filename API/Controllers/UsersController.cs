@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using API.Data;
 using API.DTOs;
@@ -6,6 +7,7 @@ using API.Entities;
 using API.Extensions;
 using API.Interfaces;
 using AutoMapper;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -89,6 +91,29 @@ public class UsersController(IUserRepository userRepository, IMapper mapper, IPh
             return NoContent();
         }
         return BadRequest("Problem setting main photo");
+    }
+
+    [HttpDelete("delete-photo/{photoId:int}")]
+    public async Task<ActionResult<PhotoDto>> DeletePhoto(int photoId)
+    {
+        var user = await userRepository.GetUserByUsernameAsync(User.GetUsername());
+
+        if (user == null) return BadRequest("User not found");
+
+        var photo = user.Photos.FirstOrDefault(p => p.Id == photoId);
+        if (photo is null || photo.IsMain) return NotFound("This photo can not be deleted");
+        if (photo.PublicId is not null)
+        {
+            DeletionResult result = await photoService.DeletePhotoAsync(photo.PublicId);
+            if (result.Error is not null) return BadRequest(result.Error.Message);
+        }
+        user.Photos.Remove(photo);
+        if (await userRepository.SaveAllAsync())
+        {
+            return Ok();
+        }
+        return BadRequest("Problem deleting photo");
+
     }
 
 }

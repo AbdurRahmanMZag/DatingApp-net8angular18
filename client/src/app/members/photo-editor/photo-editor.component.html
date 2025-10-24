@@ -5,7 +5,8 @@
         <div class="text-center">
             <button [disabled]="photo.isMain" [ngClass]="photo.isMain?'btn-success active':'btn-outline-success'"
                 (click)="setMainPhoto(photo)" class="btn btn-sm me-1">Main</button>
-            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+            <button [disabled]="photo.isMain" (click)="deletePhoto(photo)" class="btn btn-sm btn-danger"><i
+                    class="fa fa-trash"></i></button>
         </div>
     </div>
     }
